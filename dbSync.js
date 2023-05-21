@@ -16,7 +16,7 @@ sequelize
   })
   .then(() => {
     return Todo.bulkCreate([
-      { title: "Learn HTML", dueDate: "2023-05-19", userId: 1 },
+      { title: "Learn HTML", dueDate: "2023-05-19", userId: 1, status: true },
       { title: "Learn CSS", dueDate: new Date("2023-05-21"), userId: 1 },
       { title: "Learn Javascript", dueDate: new Date("2023-05-25"), userId: 2 },
       { title: "Practice Git", dueDate: new Date("2023-05-30"), userId: 3 },

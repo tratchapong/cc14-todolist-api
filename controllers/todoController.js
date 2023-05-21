@@ -4,7 +4,7 @@ exports.getAllTodos = (req, res, next) => {
     console.log(req.user)
     const {id} = req.user
     Todo.findAll({
-        // where: {userId : id}
+        where: {userId : id}
     }).then(rs => {
         res.json(rs)
     }).catch(next)
@@ -30,8 +30,13 @@ exports.getTodoById = (req, res, next) => {
 // }
 
 exports.createTodo = (req, res, next) => {
+    const {title, dueDate} = req.body
     // validation
-    Todo.create(req.body).then(rs=> {
+    Todo.create({
+        title : title,
+        dueDate : dueDate,
+        userId : req.user.id
+    }).then(rs=> {
         res.json(rs)
     }).catch(next)
 
@@ -82,15 +87,29 @@ exports.getTodoByUser = (req, res, next) => {
 }
 
 exports.summaryTodo = (req, res, next) => {
-    User.findAll({
-        attributes: ['name'],
-        include: {
-            model : Todo,
-            attributes: [ [sequelize.fn('count', sequelize.col('title')), 'tasks' ]],
-        },
-        group: 'user_id' 
-    }).then(rs => {
-        res.json(rs)
+    let countAll  = Todo.count({
+        where : { userId : req.user.id}
+    })
+    let countDone = Todo.count({
+        where : { 
+            status : true,
+            userId : req.user.id
+        }
+    })
+    let countUnDone = Todo.count({
+        where : {
+            status : false,
+            userId : req.user.id
+        }
+    })
+    Promise.all([ countAll, countDone, countUnDone])
+    .then(rs => {
+
+        res.json({
+            all : rs[0],
+            done : rs[1],
+            unDone : rs[2]
+        })
     }).catch(next)
 }
 
