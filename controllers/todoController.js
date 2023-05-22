@@ -15,7 +15,7 @@ exports.getAllTodos = (req, res, next) => {
 // ต้องการเฉพาะ title, due_date, status
 exports.getTodoById = (req, res, next) => {
   const { id } = req.params;
-  Todo.findAll({
+  Todo.findOne({
     attributes: ["title", "dueDate", "status"],
     where: { id: id },
   })
