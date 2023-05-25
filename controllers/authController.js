@@ -46,7 +46,6 @@ exports.login = (req, res, next) => {
 };
 
 exports.getMe = (req,res,next) => {
-  const {id, name, image} = req.user
-  console.log({id, name, image})
-  res.json({id, name, image})
+  const {id, name, image, aboutMe} = req.user
+  res.json({id, name, image, aboutMe})
 }

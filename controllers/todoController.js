@@ -1,7 +1,6 @@
 const { Todo, User, sequelize } = require("../models");
 
 exports.getAllTodos = (req, res, next) => {
-  console.log(req.user);
   const { id } = req.user;
   Todo.findAll({
     where: { userId: id },
@@ -15,7 +14,7 @@ exports.getAllTodos = (req, res, next) => {
 // ต้องการเฉพาะ title, due_date, status
 exports.getTodoById = (req, res, next) => {
   const { id } = req.params;
-  Todo.findOne({
+   Todo.findOne({
     attributes: ["title", "dueDate", "status"],
     where: { id: id },
   })
