@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=cc14_todolist
+      - MYSQL_ROOT_PASSWORD=12345678
+    ports:
+      - '3306:3306'
+    volumes:
+      - /tmp/mysql-data:/var/lib/mysql
+
+  api:
+    image: todoapi
+    container_name: todoapi
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+    environment:
+      - PORT=8080
+      - DB_HOST=db
+      - JWT_SECRETKEY=Codecamp14
+    
+  web:
+    image: todoweb
+    container_name: todoweb
+    depends_on:
+      - api
+    ports:
+      - 80:80
+    environment:
+      - API_HOST=139.5.146.109:8080
+  
