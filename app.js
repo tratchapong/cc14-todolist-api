@@ -15,13 +15,13 @@ morgan.token('body', (req, res) => JSON.stringify(req.body));
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] \n :body '));
 
 
-app.use('/pic',express.static('pic'))
+app.use(['/services/pic','/pic'],express.static('pic'))
 app.use(cors())
 app.use(express.json()) 
 
-app.use('/auth', authRoute)
-app.use('/user', authenticate, userRoute)
-app.use('/todos',authenticate, todoRoute)
+app.use(['/services/auth','/auth'], authRoute)
+app.use(['/services/user','/user'], authenticate, userRoute)
+app.use(['/services/todos','/todos'],authenticate, todoRoute)
 
 app.use(notFound)
 app.use(error)
